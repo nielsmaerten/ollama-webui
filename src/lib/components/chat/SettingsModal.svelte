@@ -18,6 +18,13 @@
 
 	const saveSettings = async (updated) => {
 		console.log(updated);
+		if (updated.options?.stop) {
+			try {
+				updated.options.stop = JSON.parse(updated.options.stop);
+			} catch (error) {
+				console.warn('options.stop must be an array')
+			}
+		}
 		await settings.set({ ...$settings, ...updated });
 		await models.set(await getModels());
 		localStorage.setItem('settings', JSON.stringify($settings));
